@@ -14,7 +14,7 @@ TEMPLATE_DEBUG = False
 SITE_ID = 1
 
 ALLOWED_HOSTS = (
-    'host',
+    '*',
 )
 
 ADMINS = (
@@ -24,8 +24,8 @@ MANAGERS = ADMINS
 
 # Application definition
 
-ROOT_URLCONF = '{{ project_name}}.urls'
-WSGI_APPLICATION = '{{ project_name}}.wsgi.application'
+ROOT_URLCONF = 'django_starter.urls'
+WSGI_APPLICATION = 'django_starter.wsgi.application'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -70,6 +70,13 @@ TEMPLATE_DIRS = (
 )
 
 # Database
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES = dict()
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Internationalization
 LANGUAGE_CODE = 'cs-cz'
@@ -101,6 +108,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+# Testing
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Logging
 

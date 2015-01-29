@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +16,8 @@
     {% block css_fa %}
       <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     {% endblock %}
-    {% block css_{{ project_name }} %}
-      <link href="{{ STATIC_URL }}{{ project_name }}/css/{{ project_name }}.css" rel="stylesheet">
+    {% block css_django_starter %}
+      <link href="{% static 'css/django_starter.css' %}" rel="stylesheet">
     {% endblock %}
   {% endblock %}
 </head>

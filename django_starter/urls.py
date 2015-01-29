@@ -7,6 +7,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
+# Main URL Patterns
+urlpatterns += patterns('',
+    url(r'^$', 'django_starter.views.home')
+)
+
 # Development
 from django.conf import settings
 if settings.DEBUG:
