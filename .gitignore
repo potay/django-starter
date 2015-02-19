@@ -1,3 +1,5 @@
 venv
 *.pyc
-tmp/db.sqlite3
+tmp
+
+!tmp/__init__.py
