@@ -78,7 +78,7 @@ def replace_references(dir=PROJECT_ROOT):
 def generate_key():
     """ Generate a new Django secret key for use in settings.py. """
 
-    settingsPath = os.path.join(PROJECT_ROOT, PROJECT_NAME, 'settings/production.py')
+    settingsPath = os.path.join(PROJECT_ROOT, 'venv/bin/activate')
 
     try:
         with open(settingsPath, 'r') as f:
@@ -88,30 +88,11 @@ def generate_key():
         raise NoDjSettings()
 
     # Generate a new secret key (consisting of 50 OS-produced random bytes)
-    newKey = (
-        ''.join(
-                (
-                    '\\x{}'.format(
-                            '0' + hex(n)[2:] if n < 0x10 else hex(n)[2:]
-                        )
-                    for n in (ord(b) for b in os.urandom(10))
-                )
-            )
-        for i in xrange(5)
-    )
+    import random, string
+    newKey = "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])
 
     # Insert the new key into settings.py
-    newData = data.replace(
-            '\'{{ secret_key }}\'',
-            '(\n{})'.format(
-                    ''.join(
-                            (
-                                '{}\'{}\'\n'.format(' ' * 4, keyPart)
-                                for keyPart in newKey
-                            )
-                        )
-                )
-        )
+    newData = data + '\n\nexport DJANGO_SECRET_KEY=%s\n\n' % newKey
 
     # Save the new settings.py
     with open(settingsPath, 'w') as f:
@@ -119,11 +100,11 @@ def generate_key():
 
 
 def main():
-    print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv'),
+    print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv')
     os.system('virtualenv venv')
     print "Done!"
 
-    print "Installing python packages via pip...",
+    print "Installing python packages via pip..."
     os.system('source venv/bin/activate; pip install -r requirements.txt')
     print "Done!"
 
@@ -142,6 +123,7 @@ def main():
     print
     print "Setup finished!"
     print "You may now remove this file (setup.py)."
+    print "Remember to source your virtual environment before continuing (run 'source venv/bin/activate')."
 
     return 0
 

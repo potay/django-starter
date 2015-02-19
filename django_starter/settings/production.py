@@ -5,7 +5,7 @@ PROJECT_APP_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(PROJECT_APP_ROOT))
 PUBLIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, 'public'))
 
-SECRET_KEY = '{{ secret_key }}'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = False
 TEMPLATE_DEBUG = False
