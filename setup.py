@@ -107,7 +107,7 @@ def generate_key():
     newKey = "".join([random.SystemRandom().choice(validList) for i in range(100)])
 
     # Insert the new key into settings.py
-    newData = data + '\n\nexport DJANGO_SECRET_KEY="%s\n\n"' % newKey
+    newData = data + '\n\nexport DJANGO_SECRET_KEY="%s"\n\n' % newKey
 
     # Save the new settings.py
     with open(settingsPath, 'w') as f:
