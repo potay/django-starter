@@ -129,11 +129,11 @@ def main():
     print "Done!"
 
     print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME,
-    rename_directory(PROJECT_ROOT)
+    rename_directory()
     print "Done!"
 
     print "Replacing 'django_starter' references with '%s'... " % PROJECT_NAME,
-    replace_references()
+    replace_references(PROJECT_ROOT)
     print "Done!"
 
     print "Generating new Django secret key...",
