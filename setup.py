@@ -10,6 +10,7 @@ import sys
 
 if len(sys.argv) <= 1:
     print "You must supply a project name."
+    print "run 'python setup.py [PROJECT_NAME]'"
     sys.exit(1)
 
 PROJECT_NAME = sys.argv[1]
