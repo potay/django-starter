@@ -42,7 +42,9 @@ def rename_directory():
     if not os.path.exists(djprojectPath):
         raise NoDjProjectDir()
 
+    os.chdir('..')
     os.rename(djprojectPath, PROJECT_NAME)
+    os.chdir(PROJECT_NAME)
 
 
 def rename_root_directory():
