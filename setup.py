@@ -75,7 +75,7 @@ def replace_references(dir=PROJECT_ROOT):
         # Replace references in all *.py files (except setup.py),
         # and also the Procfile.
         elif ((item.endswith('.py') and item != 'setup.py')
-                or item == 'Procfile'):
+                or item == 'Procfile' or item == 'README.md'):
 
             # Read the file data
             with open(itemPath, 'r') as f:
