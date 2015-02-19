@@ -12,6 +12,9 @@ os.system('python manage.py makemigrations')
 print "\n*** Syncing DB Entries... ***"
 os.system('python manage.py syncdb')
 
+print "\n*** Checking pip status... ***"
+os.system('pip install -r requirements.txt')
+
 #print "\n*** Collecting static... please take off your wool sweaters for safety ***"
 #if '--clear' in sys.argv:
 #    os.system('python manage.py collectstatic --clear --noinput')

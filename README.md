@@ -7,3 +7,4 @@
 4. Delete setup.py file
 5. Replace this file with your readme.
 6. Start making awesome django web apps!
+7. Run the local test server: ```python runserver.py```
