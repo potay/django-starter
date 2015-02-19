@@ -129,7 +129,7 @@ def main():
     print "Done!"
 
     print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME,
-    rename_directory()
+    rename_directory(PROJECT_ROOT)
     print "Done!"
 
     print "Replacing 'django_starter' references with '%s'... " % PROJECT_NAME,
