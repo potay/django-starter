@@ -3,7 +3,7 @@ import sys
 
 try:
     os.chdir(os.path.dirname(__file__))
-except WindowsError:
+except:
     pass
 
 print "*** Checking for DB Migrations... ***"

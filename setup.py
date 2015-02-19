@@ -121,11 +121,10 @@ def generate_key():
 def main():
     print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv'),
     os.system('virtualenv venv')
-    os.system('source venv/bin/activate')
     print "Done!"
 
     print "Installing python packages via pip...",
-    os.system('pip install -r requirements.txt')
+    os.system('source venv/bin/activate; pip install -r requirements.txt')
     print "Done!"
 
     print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME,
