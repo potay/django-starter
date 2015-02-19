@@ -119,20 +119,29 @@ def generate_key():
 
 
 def main():
-    print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME
+    print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv'),
+    os.system('virtualenv venv')
+    os.system('source venv/bin/activate')
+    print "Done!"
+
+    print "Installing python packages via pip...",
+    os.system('pip install -r requirements.txt')
+    print "Done!"
+
+    print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME,
     rename_directory()
     print "Done!"
 
-    print "Replacing 'django_starter' references with '%s'... " % PROJECT_NAME
+    print "Replacing 'django_starter' references with '%s'... " % PROJECT_NAME,
     replace_references()
     print "Done!"
 
-    print "Generating new Django secret key... ",
+    print "Generating new Django secret key...",
     generate_key()
     print "Done!"
 
-    print ""
-    print "Configuration finished!"
+    print
+    print "Setup finished!"
     print "You may now remove this file (setup.py)."
 
     return 0
