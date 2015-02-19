@@ -142,6 +142,16 @@ def main():
     generate_key()
     print "Done!"
 
+    print "Restarting git...",
+    os.system('rm -rf .git')
+    os.system('git init .')
+    print "Done!"
+
+    print "Commiting initial to git...",
+    os.system('git add .')
+    os.system('git commit -m "Initial commit"')
+    print "Done!"
+
     print
     print "Setup finished!"
     print "You may now remove this file (setup.py)."
