@@ -103,7 +103,7 @@ def generate_key():
 
     # Generate a new secret key (consisting of 50 OS-produced random bytes)
     import random, string
-    validList = (string.digits + string.letters + string.punctuation).remove('`')
+    validList = (string.digits + string.letters + string.punctuation).replace('`', '')
     newKey = "".join([random.SystemRandom().choice(validList) for i in range(100)])
 
     # Insert the new key into settings.py
