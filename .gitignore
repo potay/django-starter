@@ -1,2 +1,3 @@
 venv
 *.pyc
+tmp/db.sqlite3

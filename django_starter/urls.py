@@ -3,13 +3,15 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+# Included App URL Patterns
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^users/', include('django_starter.apps.users.urls', namespace='users'))
 )
 
 # Main URL Patterns
 urlpatterns += patterns('',
-    url(r'^$', 'django_starter.views.home')
+    url(r'^$', 'django_starter.views.home'),
 )
 
 # Development

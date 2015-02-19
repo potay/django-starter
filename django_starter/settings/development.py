@@ -12,9 +12,18 @@ DATABASES = {
     }
 }
 
+if DEBUG:
+  # Local Statics Settings
+  STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+  STATIC_URL = '/static/'
+  MEDIA_URL = '/media/'
+
+  STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
+  MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
+
 INTERNAL_IPS = ('127.0.0.1',)
 
-#if 'debug_toolbar' not in INSTALLED_APPS:
-#    INSTALLED_APPS += ('debug_toolbar',)
+if 'debug_toolbar' not in INSTALLED_APPS:
+    INSTALLED_APPS += ('debug_toolbar',)
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

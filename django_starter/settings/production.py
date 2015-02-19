@@ -1,6 +1,5 @@
 import os
-
-gettext_noop = lambda s: s
+from django.utils.translation import ugettext_lazy as _
 
 PROJECT_APP_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(PROJECT_APP_ROOT))
@@ -22,6 +21,9 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
+# Change this to set default user login url
+#LOGIN_URL = 'login'
+
 # Application definition
 
 ROOT_URLCONF = 'django_starter.urls'
@@ -34,8 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # '{{ project_name}}.apps.accounts',
+    'django_starter.apps.users',
+    # 'storages',
+    # '{{ project_name }}.apps.accounts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,13 +82,12 @@ DATABASES['default'] =  dj_database_url.config()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Internationalization
-LANGUAGE_CODE = 'cs-cz'
+LANGUAGE_CODE = 'en'
 LANGUAGES = (
-    'cs', gettext_noop('Czech'),
-    'en', gettext_noop('English'),
+    'en', _('English'),
 )
 
-TIME_ZONE = 'Europe/Prague'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -96,6 +98,21 @@ LOCALE_PATHS = os.path.join(PROJECT_ROOT, 'locale')
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+
+# If django-storages is enabled
+if 'storages' in INSTALLED_APPS:
+    # Amazon S3 Settings
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = 'django_starter.prefixed_storage.PrefixedStorage'
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+    AWS_PRELOAD_METADATA = True
+
+    # Static files (CSS, JavaScript, Images)
+    ASSETS_PREFIX = 'static' # Change this to preferred prefix
+    STATIC_URL = "https://%s.s3.amazonaws.com/%s/" % (os.environ['AWS_STORAGE_BUCKET_NAME'], ASSETS_PREFIX)
+    STATIC_ROOT = ''
 
 STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
 MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
