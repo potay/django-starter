@@ -118,7 +118,7 @@ def main():
     print "Renaming root 'django_starter' to '%s'... " % PROJECT_NAME,
     rename_root_directory()
     PROJECT_ROOT = os.getcwd()
-    print "Done!", PROJECT_ROOT
+    print "Done!"
 
     print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv')
     os.system('virtualenv venv')
