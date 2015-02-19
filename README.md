@@ -1,5 +1,7 @@
 ##django_starter
 
+A user-friendly Django 1.7 Starter Template with an organized file structure for team development.
+
 ## Installation
 1. Clone it ```git clone git@github.com:potay/django-starter.git```
 2. Run ```cd django_starter```
