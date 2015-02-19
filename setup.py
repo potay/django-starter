@@ -103,11 +103,11 @@ def generate_key():
 
     # Generate a new secret key (consisting of 50 OS-produced random bytes)
     import random, string
-    validList = (string.digits + string.letters + string.punctuation).replace('`', '')
+    validList = (string.digits + string.letters + string.punctuation).translate(None, '`"\'')
     newKey = "".join([random.SystemRandom().choice(validList) for i in range(100)])
 
     # Insert the new key into settings.py
-    newData = data + '\n\nexport DJANGO_SECRET_KEY=%s\n\n' % newKey
+    newData = data + '\n\nexport DJANGO_SECRET_KEY="%s\n\n"' % newKey
 
     # Save the new settings.py
     with open(settingsPath, 'w') as f:
