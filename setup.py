@@ -45,6 +45,17 @@ def rename_directory():
     os.rename(djprojectPath, PROJECT_NAME)
 
 
+def rename_root_directory():
+    """ Renames the root django_starter directory to PROJECT_NAME. """
+
+    djMainPath = PROJECT_ROOT
+
+    if not os.path.exists(djMainPath):
+        raise NoDjProjectDir()
+
+    os.rename(djMainPath, PROJECT_NAME)
+
+
 def replace_references(dir=PROJECT_ROOT):
     """ Recursively walks through the project and replaces references to
     'django_starter' with PROJECT_NAME.
@@ -100,6 +111,13 @@ def generate_key():
 
 
 def main():
+    global PROJECT_ROOT
+
+    print "Renaming root 'django_starter' to '%s'... " % PROJECT_NAME,
+    rename_root_directory()
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    print "Done!"
+
     print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv')
     os.system('virtualenv venv')
     print "Done!"
