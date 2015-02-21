@@ -1,10 +1,12 @@
 #django_starter
 
-A user-friendly Django 1.7 Starter Template with an organized file structure for team development.
+A user-friendly Django 1.7 Starter Template for Heroku deployment with an organized file structure for team development.
 
 ## Requirements
+* The Heroku Toolbelt, as described in [Getting Started with Python](https://devcenter.heroku.com/articles/getting-started-with-python).
+* Installed Python and [Virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) in a unix-style environment.
 * [Pip](https://pip.pypa.io/en/latest/installing.html)
-* [Virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
+* An installed version of [Postgres](http://www.postgresql.org/) to test locally.
 
 ## Installation
 1. Clone it ```git clone git@github.com:potay/django-starter.git```
