@@ -2,6 +2,10 @@
 
 A user-friendly Django 1.7 Starter Template with an organized file structure for team development.
 
+## Requirements
+* [Pip](https://pip.pypa.io/en/latest/installing.html)
+* [Virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
+
 ## Installation
 1. Clone it ```git clone git@github.com:potay/django-starter.git```
 2. Run ```cd django_starter```
