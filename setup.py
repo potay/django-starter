@@ -7,13 +7,29 @@ Sets up the Django template as a new, distinct project.
 
 import os
 import sys
+import argparse
 
-if len(sys.argv) <= 1:
-    print "You must supply a project name."
-    print "run 'python setup.py [PROJECT_NAME]'"
-    sys.exit(1)
+parser = argparse.ArgumentParser()
+parser.add_argument("projectname", help="You must supply a project name.")
+parser.add_argument("--noheroku", help="Don't set heroku as desired deployment option",
+                    action="store_true")
+parser.add_argument("--novenv", help="Don't use virtual environment and use local environment instead (Not recommended)",
+                    action="store_true")
+parser.add_argument("--nogit", help="Don't use git (not recommended)",
+                    action="store_true")
+args = parser.parse_args()
 
-PROJECT_NAME = sys.argv[1]
+if args.noheroku:
+    HEROKU = False
+    requirements = "requirements.txt"
+else:
+    HEROKU = True
+    requirements = "requirements-heroku.txt"
+
+NO_VENV = args.novenv
+NO_GIT = args.nogit
+
+PROJECT_NAME = args.projectname
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -41,9 +57,12 @@ def rename_directory():
     djprojectPath = os.path.join(PROJECT_ROOT, 'django_starter')
 
     if not os.path.exists(djprojectPath):
-        raise NoDjProjectDir()
-
-    os.rename(djprojectPath, PROJECT_NAME)
+        if not os.path.exists(os.path.join(PROJECT_ROOT, PROJECT_NAME)):
+            raise NoDjProjectDir()
+        else:
+            print "Directory already renamed"
+    else:
+        os.rename(djprojectPath, PROJECT_NAME)
 
 
 def rename_root_directory():
@@ -89,10 +108,44 @@ def replace_references(dir=PROJECT_ROOT):
                 f.write(newData)
 
 
+def install_venv():
+    """ Installs virtualenv for user. """
+    if not os.path.exists(os.path.join(PROJECT_ROOT, "venv")):
+        os.system('virtualenv venv')
+    else:
+        if (os.system('rm -rf venv') == 0):
+            os.system('virtualenv venv')
+        else:
+            print "Unable to recreate virtual environment"
+
+
+def set_heroku(heroku=True):
+    """ Turn heroku on or off in settings.py. """
+
+    settingsPath = os.path.join(PROJECT_ROOT, '%s/settings/production.py' % PROJECT_NAME)
+
+    try:
+        with open(settingsPath, 'r') as f:
+            data = f.read()
+
+    except IOError:
+        raise NoDjSettings()
+
+    # Change heroku settings in settings.py
+    newData = data.replace("{{HEROKU_VALUE}}", "%s" % str(heroku))
+
+    # Save the new settings.py
+    with open(settingsPath, 'w') as f:
+        f.write(newData)
+
+
 def generate_key():
     """ Generate a new Django secret key for use in settings.py. """
 
-    settingsPath = os.path.join(PROJECT_ROOT, 'venv/bin/activate')
+    if NO_VENV:
+        settingsPath = os.path.join(PROJECT_ROOT, '%s/settings/production.py' % PROJECT_NAME)
+    else:
+        settingsPath = os.path.join(PROJECT_ROOT, 'venv/bin/activate')
 
     try:
         with open(settingsPath, 'r') as f:
@@ -106,8 +159,12 @@ def generate_key():
     validList = (string.digits + string.letters + string.punctuation).translate(None, '`"\'')
     newKey = "".join([random.SystemRandom().choice(validList) for i in range(100)])
 
-    # Insert the new key into settings.py
-    newData = data + '\n\nexport DJANGO_SECRET_KEY="%s"\n\n' % newKey
+    if NO_VENV:
+        # Insert the new key into settings.py
+        newData = data.replace("os.environ['DJANGO_SECRET_KEY']", "'%s'" % newKey)
+    else:
+        # Insert the key into environment variable
+        newData = data + '\n\nexport DJANGO_SECRET_KEY="%s"\n\n' % newKey
 
     # Save the new settings.py
     with open(settingsPath, 'w') as f:
@@ -122,12 +179,16 @@ def main():
     PROJECT_ROOT = os.path.join(os.path.dirname(PROJECT_ROOT), PROJECT_NAME)
     print "Done!"
 
-    print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv')
-    os.system('virtualenv venv')
-    print "Done!"
+    if not NO_VENV:
+        print "Installing virtualenv at %s..." % os.path.join(PROJECT_ROOT, 'venv')
+        install_venv()
+        print "Done!"
 
     print "Installing python packages via pip..."
-    os.system('source venv/bin/activate; pip install -r requirements.txt')
+    if NO_VENV:
+        os.system('pip install -r %s' % requirements)
+    else:
+        os.system('source venv/bin/activate; pip install -r %s' % requirements)
     print "Done!"
 
     print "Renaming directory 'django_starter' to '%s'... " % PROJECT_NAME,
@@ -138,19 +199,33 @@ def main():
     replace_references(PROJECT_ROOT)
     print "Done!"
 
+    if HEROKU:
+        print "Modifying settings for heroku setup...",
+        set_heroku(True)
+        print "Done!"
+    else:
+        print "Modifying settings for non-heroku setup...",
+        set_heroku(False)
+        print "Done!"
+
     print "Generating new Django secret key...",
     generate_key()
     print "Done!"
 
-    print "Restarting git...",
-    os.system('rm -rf .git')
-    os.system('git init .')
-    print "Done!"
+    if NO_GIT:
+        print "Deleting git...",
+        os.system('rm -rf .git')
+        print "Done!"
+    else:
+        print "Restarting git...",
+        os.system('rm -rf .git')
+        os.system('git init .')
+        print "Done!"
 
-    print "Commiting initial to git...",
-    os.system('git add .')
-    os.system('git commit -m "Initial commit"')
-    print "Done!"
+        print "Commiting initial to git...",
+        os.system('git add .')
+        os.system('git commit -m "Initial commit"')
+        print "Done!"
 
     print
     print "Setup finished!"

@@ -9,6 +9,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = False
 TEMPLATE_DEBUG = False
+HEROKU = {{HEROKU_VALUE}}
 
 SITE_ID = 1
 
@@ -73,10 +74,19 @@ TEMPLATE_DIRS = (
 )
 
 # Database
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES = dict()
-DATABASES['default'] =  dj_database_url.config()
+if HEROKU:
+    # Parse database configuration from $DATABASE_URL
+    import dj_database_url
+    DATABASES = dict()
+    DATABASES['default'] =  dj_database_url.config()
+else:
+    DB_PATH = os.path.abspath(os.path.join(PROJECT_ROOT, 'db'))
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(DB_PATH, 'db.sqlite3'),
+        }
+    }
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
