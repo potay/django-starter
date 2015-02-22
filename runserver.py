@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import sys
 
 try:
     os.chdir(os.path.dirname(__file__))
@@ -17,7 +16,7 @@ os.system('python manage.py syncdb')
 print "\n*** Checking pip status... ***"
 os.system('pip install -r requirements.txt')
 
-#print "\n*** Collecting static... please take off your wool sweaters for safety ***"
+#print "\n*** Collecting static... ***"
 #if '--clear' in sys.argv:
 #    os.system('python manage.py collectstatic --clear --noinput')
 #else:

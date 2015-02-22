@@ -230,7 +230,8 @@ def main():
     print
     print "Setup finished!"
     print "You may now remove this file (setup.py)."
-    print "Remember to source your virtual environment before continuing (run 'source venv/bin/activate')."
+    if not NO_VENV:
+        print "Remember to source your virtual environment before continuing (run 'source venv/bin/activate')."
 
     return 0
 

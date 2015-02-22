@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid, os
 
+def avatarUploadToFn(i, filename):
+    return os.path.join('avatars', "%s.%s" % (uuid.uuid4(), filename.split('.')[-1]))
+
 class Profile(models.Model):
 
   # Fields
@@ -16,7 +19,7 @@ class Profile(models.Model):
   )
 
   avatar = models.ImageField(
-    upload_to=lambda i, filename: os.path.join('avatars', "%s.%s" % (uuid.uuid4(), filename.split('.')[-1])),
+    upload_to=avatarUploadToFn,
     blank=True,
     default=""
   )
