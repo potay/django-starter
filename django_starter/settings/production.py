@@ -108,6 +108,17 @@ LOCALE_PATHS = os.path.join(PROJECT_ROOT, 'locale')
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 # If django-storages is enabled
 if 'storages' in INSTALLED_APPS:
@@ -123,18 +134,6 @@ if 'storages' in INSTALLED_APPS:
     ASSETS_PREFIX = 'static' # Change this to preferred prefix
     STATIC_URL = "https://%s.s3.amazonaws.com/%s/" % (os.environ['AWS_STORAGE_BUCKET_NAME'], ASSETS_PREFIX)
     STATIC_ROOT = ''
-
-STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
-MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
-
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
 
 # Testing
 
