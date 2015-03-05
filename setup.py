@@ -138,6 +138,8 @@ def set_heroku(heroku=True):
     with open(settingsPath, 'w') as f:
         f.write(newData)
 
+    os.rename(requirements, "requirements.txt")
+
 
 def generate_key():
     """ Generate a new Django secret key for use in settings.py. """
